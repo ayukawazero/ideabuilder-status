@@ -15,13 +15,10 @@ namespace ideabuilder_status
         public Dictionary<string, string> Settings { get { return _settings; } }
         public Dictionary<string, string> Status { get { return _status; } }
 
-        public DremelStatus()
-        {
+        public DremelStatus() { 
             _settings = new Dictionary<string, string>();
             _status = new Dictionary<string, string>();
-            _settingNames = InitializeNames();
         }
-
         public DremelStatus(Dictionary<string, string> _items)
         {
             _settings = new Dictionary<string, string>();
