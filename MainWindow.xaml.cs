@@ -60,9 +60,7 @@ namespace ideabuilder_status
         async Task RunInBackground(TimeSpan ts, Action a)
         {
             _refreshTimer = new PeriodicTimer(ts);
-            //var ptTimer = new PeriodicTimer(ts);
             while (await _refreshTimer.WaitForNextTickAsync())
-                //while (await ptTimer.WaitForNextTickAsync())
             {
                 a();
             }
@@ -121,16 +119,16 @@ namespace ideabuilder_status
             DremelCommand dc = new DremelCommand(_ipAddress);
             DremelStatus ds;
             Dictionary<string, string> response = dc.SendCommand("GETPRINTERSTATUS");
-            if (response != null) {
+            if (response.Count > 0) {
                 ds = new DremelStatus(response);
             } 
             else
             {
-                ds = null;
+                ds = new DremelStatus();
                 _refreshTimer?.Dispose();
             }
 
-            if (ds != null)
+            if (ds.Status.Count > 0 && ds.Settings.Count > 0)
             {
                 dgSettings.ItemsSource = ds.Settings;
 

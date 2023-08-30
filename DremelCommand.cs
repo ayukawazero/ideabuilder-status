@@ -13,11 +13,6 @@ namespace ideabuilder_status
     {
         private string _ipAddress;
 
-        public DremelCommand()
-        {
-            _ipAddress = "";
-        }
-
         public DremelCommand(string ipAddress)
         {
             _ipAddress = ipAddress;
@@ -38,9 +33,9 @@ namespace ideabuilder_status
             {
                 t.Wait();
             } 
-            catch (Exception ex)
+            catch (Exception)
             {
-                return null;
+                return new Dictionary<string, string>();
             }
 
             return JsonConvert.DeserializeObject<Dictionary<string, string>>(t.Result);

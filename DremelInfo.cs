@@ -16,18 +16,11 @@ namespace ideabuilder_status
 
         public string DeviceName { get { return _deviceName; } }
 
-        public DremelInfo()
-        {
-            _deviceName = "";
-            _info = new Dictionary<string, string>();
-            _infoNames = InitializeNames();
-        }
-
         public DremelInfo(Dictionary<string, string> _items)
         {
             _info = new Dictionary<string, string>();
             _infoNames = InitializeNames();
-
+            _deviceName = string.Empty;
             if (_items != null)
             {
                 foreach (var item in _items)
