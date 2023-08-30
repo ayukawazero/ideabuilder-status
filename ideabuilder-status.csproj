@@ -6,10 +6,65 @@
     <RootNamespace>ideabuilder_status</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>True</UseWindowsForms>
+    <ApplicationIcon>dicon_app_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="button-exit.png" />
+    <None Remove="Resources\button-cancel.png" />
+    <None Remove="Resources\button-exit.png" />
+    <None Remove="Resources\button-pause.png" />
+    <None Remove="Resources\button-play.png" />
+    <None Remove="Resources\button-refresh.png" />
+    <None Remove="Resources\button-settings.png" />
+    <None Remove="Resources\dicon_tray_icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="dicon_app_icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="button-exit.png" />
+    <Resource Include="Resources\button-cancel.png" />
+    <Resource Include="Resources\button-exit.png" />
+    <Resource Include="Resources\button-pause.png" />
+    <Resource Include="Resources\button-play.png" />
+    <Resource Include="Resources\button-refresh.png" />
+    <Resource Include="Resources\button-settings.png" />
+    <Resource Include="Resources\dicon_tray_icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ApplicationResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ApplicationResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="ApplicationResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ApplicationResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,49 @@
+﻿<Window x:Class="ideabuilder_status.SettingsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ideabuilder_status"
+        mc:Ignorable="d"
+        Title="Settings" Height="244" Width="400" ScrollViewer.VerticalScrollBarVisibility="Disabled" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+
+    <WrapPanel Orientation="Horizontal" Margin="10,10,10,10" Height="204">
+        <StackPanel Orientation="Horizontal" Margin="15 15 15 0">
+            <Label Content="Printer IP Address"/>
+            <TextBox Margin="15 5 0 0" x:Name="txtIpAddress" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="15 15 15 0">
+            <Label Content="Polling Frequency" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+            <Grid Margin="10 0 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="1" x:Name="lblSliderValue" Content="lblSliderValue" HorizontalAlignment="Left" VerticalAlignment="Top" Width="117"/>
+                <Slider Grid.Column="0" x:Name="sldFrequency" Value="1" Maximum="7" Minimum="1" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="120" ValueChanged="sldFrequency_ValueChanged"/>
+
+            </Grid>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="15 15 15 0">
+            <Label Width="100" />
+            <CheckBox x:Name="chkMinimizeToTray" Content="Minimize to Tray" Margin="15 0 0 0"/>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="15 35 15 0">
+            <Label Width="100" />
+            <Grid Margin="60 0 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="90"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="btnCancel" Content="_Cancel" MinWidth="60" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Click="btnCancel_Click"/>
+                <Button x:Name="btnSave" Content="_Save" MinWidth="60" HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Column="0" Click="btnSave_Click"/>
+            </Grid>
+        </StackPanel>
+    </WrapPanel>
+
+
+</Window>

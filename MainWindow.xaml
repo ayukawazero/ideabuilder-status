@@ -4,11 +4,151 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ideabuilder_status"
-        mc:Ignorable="d"
-        Title="Dremel IdeaBuilder Status" Height="450" Width="800">
-    <Grid>
-        <Button x:Name="btnRefresh" Content="Refresh" HorizontalAlignment="Left" Margin="562,95,0,0" VerticalAlignment="Top" Click="btnRefresh_Click"/>
-        <DataGrid x:Name="dgSettings" d:ItemsSource="{Binding}" HorizontalAlignment="Left" Width="392" />
+        mc:Ignorable="d mc"
+        Title="Dremel IdeaBuilder Status" SizeToContent="WidthAndHeight" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+    <!-- Height="519" Width="740" -->
+    <Window.CommandBindings>
+        <CommandBinding Command="local:MenuCommands.Settings" Executed="Settings_Executed" />
+        <CommandBinding Command="local:MenuCommands.Commands_Refresh" Executed="Commands_Refresh_Executed" />
+        <CommandBinding Command="local:MenuCommands.Commands_Pause" Executed="Commands_Pause_Executed" />
+        <CommandBinding Command="local:MenuCommands.Commands_Resume" Executed="Commands_Resume_Executed" />
+        <CommandBinding Command="local:MenuCommands.Commands_Cancel" Executed="Commands_Cancel_Executed" />
+        <CommandBinding Command="local:MenuCommands.File_Exit" Executed="File_Exit_Executed" />
+    </Window.CommandBindings>
+
+    <Grid Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Column="0" Grid.Row="0">
+            <Menu IsMainMenu="True" DockPanel.Dock="Top" Background="{x:Null}">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Exit" Command="local:MenuCommands.File_Exit" />
+                </MenuItem>
+
+                <MenuItem Header="_Settings" Command="local:MenuCommands.Settings" />
+                <MenuItem Header="_Commands">
+                    <MenuItem Header="Refresh _Status" Command="local:MenuCommands.Commands_Refresh" />
+                    <Separator />
+                    <MenuItem Header="_Pause" x:Name="miPause" Command="local:MenuCommands.Commands_Pause" />
+                    <MenuItem Header="_Resume" x:Name="miResume" Visibility="Collapsed" Command="local:MenuCommands.Commands_Resume" />
+                    <MenuItem Header="_Cancel" Command="local:MenuCommands.Commands_Cancel" />
+                </MenuItem>
+            </Menu>
+            <ToolBarTray DockPanel.Dock="Top" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsLocked="True">
+                <ToolBar>
+                    <Button Command="local:MenuCommands.File_Exit" ToolTip="Exit" Margin="5,0,5,0">
+                        <Image Source="/button-exit.png" Width="16" Height="16"/>
+                    </Button>
+                    <Separator />
+                    
+                    <Button x:Name="btnPause" Command="local:MenuCommands.Commands_Pause" ToolTip="Pause Printing" Margin="5,0,5,0">
+                        <Image Source="/Resources/button-pause.png" Width="16" Height="16" />
+                    </Button>
+                    <Button x:Name="btnResume" Command="local:MenuCommands.Commands_Resume" Visibility="Collapsed" ToolTip="Resume Printing" Margin="5,0,5,0">
+                        <Image Source="/Resources/button-play.png" Width="16" Height="16" />
+                    </Button>
+                    <Button x:Name="btnCancel" Command="local:MenuCommands.Commands_Cancel" ToolTip="Cancel Printing" Margin="5,0,5,0">
+                        <Image Source="/Resources/button-cancel.png" Width="16" Height="16" />
+                    </Button>
+                    <Separator />
+                    <Button Command="local:MenuCommands.Commands_Refresh" ToolTip="Refresh" Margin="5,0,5,0">
+                        <Image Source="/Resources/button-refresh.png" Width="16" Height="16" />
+                    </Button>
+                    <Button Command="local:MenuCommands.Settings" ToolTip="Settings" Margin="5,0,5,0">
+                        <Image Source="/Resources/button-settings.png" Width="16" Height="16" />
+                    </Button>
+
+                </ToolBar>
+
+            </ToolBarTray>
+
+        </DockPanel>
+        <Grid Grid.Row="1" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <!-- <DataGrid Grid.Row="0" Grid.Column="0" x:Name="dgSettings" AutoGenerateColumns="False" HeadersVisibility="Column" Width="300" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Single" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" HorizontalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
+             -->
+            <DataGrid Grid.Row="0" Grid.Column="0" Height="413" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="2" x:Name="dgSettings" HorizontalScrollBarVisibility="Disabled" IsReadOnly="True" CanUserSortColumns="False" HeadersVisibility="Column" Width="300">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Setting" Binding="{Binding Key}" MinWidth="150"/>
+                    <DataGridTextColumn Header="Value" Binding="{Binding Value}" MinWidth="150" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5 0 0 0" Width="400">
+                <Label Content="Printer Information" Background="#FFCCC5E4" FontWeight="Bold" FontSize="16" />
+                <Border BorderBrush="Black" BorderThickness="2" Height="150" Margin="0 0 0 20">
+                    <Canvas Width="400" Height="150">
+                        <Label Content="Printer Name" Panel.ZIndex="1" x:Name="lblPrinter" Canvas.Left="10" Canvas.Top="4" FontWeight="Bold" FontSize="14">
+                            <Label.ToolTip>
+                            <ToolTip>
+                                    <DataGrid x:Name="dgInfo" AutoGenerateColumns="False" HeadersVisibility="None" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Single" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" HorizontalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Setting" Binding="{Binding Key}" MinWidth="150"/>
+                                            <DataGridTextColumn Header="Value" Binding="{Binding Value}" MinWidth="150" Width="*" />
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
+
+                        <Label Content="IP Address:" Canvas.Left="10" Canvas.Top="34" FontWeight="Bold"/>
+                        <Label Content="lblAddress" x:Name="lblAddress" Canvas.Left="150" Canvas.Top="34" FontWeight="Bold"/>
+                        <Label Content="Nozzle Temperature:" Canvas.Left="10" Canvas.Top="64" FontWeight="Bold"/>
+                        <Label Content="lblTemperature"  x:Name="lblTemperature" Canvas.Left="150" Canvas.Top="64" FontWeight="Bold"/>
+                        <Label Content="Door Status:" Canvas.Left="10" Canvas.Top="84" FontWeight="Bold"/>
+                        <Label Content="lblDoor"  x:Name="lblDoor" Canvas.Left="150" Canvas.Top="84" FontWeight="Bold"/>
+                        <Label Content="Printer Status:" Canvas.Left="10" Canvas.Top="104" FontWeight="Bold"/>
+                        <Label Content="lblStatus"  x:Name="lblStatus" Canvas.Left="150" Canvas.Top="104" FontWeight="Bold"/>
+
+                    </Canvas>
+                </Border>
+
+                <Label Content="Job Information" Background="#FFCCC5E4" FontWeight="Bold" FontSize="16" />
+                <Border BorderBrush="Black" BorderThickness="2" Height="180" Margin="0 0 0 0">
+                    <Canvas Height="180" Width="400">
+                        <Label Content="Job Name:" Canvas.Left="10" Canvas.Top="4" FontWeight="Bold"/>
+                        <Label Content="lblJobname" x:Name="lblJobname" Canvas.Left="150" Canvas.Top="4" FontWeight="Bold"/>
+
+                        <Label Content="Job Status:" Canvas.Left="10" Canvas.Top="24" FontWeight="Bold"/>
+                        <Label Content="lblJobstatus" x:Name="lblJobstatus" Canvas.Left="150" Canvas.Top="24" FontWeight="Bold"/>
+
+                        <Label Content="Progress:" Canvas.Left="10" Canvas.Top="44" FontWeight="Bold"/>
+                        <Label Content="lblProgress" x:Name="lblProgress" Canvas.Left="150" Canvas.Top="44" FontWeight="Bold"/>
+
+                        <Label Content="Build Time:" Canvas.Left="10" Canvas.Top="84" FontWeight="Bold"/>
+                        <Label Content="lblTotalTime" x:Name="lblTotalTime" Canvas.Left="150" Canvas.Top="84" FontWeight="Bold"/>
+
+
+                        <Label Content="Est. Time Remaining:" Canvas.Left="10" Canvas.Top="104" FontWeight="Bold"/>
+                        <Label Content="lblRemaining" x:Name="lblRemaining" Canvas.Left="150" Canvas.Top="104" FontWeight="Bold"/>
+
+                        <Label Content="Time Elapsed:" Canvas.Left="10" Canvas.Top="124" FontWeight="Bold"/>
+                        <Label Content="lblElapsed" x:Name="lblElapsed" Canvas.Left="150" Canvas.Top="124" FontWeight="Bold"/>
+
+                    </Canvas>
+                </Border>
+
+
+            </StackPanel>
+
+
+
+        </Grid>
+
 
     </Grid>
 </Window>
